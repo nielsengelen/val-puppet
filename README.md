@@ -80,8 +80,8 @@ Testing on other platforms has not been performed and is currently not supported
 
 ##Development
 
-Please contact 
+Please contact Niels Engelen via [twitter](https://twitter.com/nielsengelen).
 
 ##Support
 
-Need help? Join uso n the [discussion forum](https://forums.veeam.com/veeam-backup-for-linux-f41/).
+Need help? Join us on the [discussion forum](https://forums.veeam.com/veeam-backup-for-linux-f41/).
