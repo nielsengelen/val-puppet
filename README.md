@@ -1,4 +1,4 @@
-# Veeam Backup for Linux puppet class
+# Veeam Agent for Linux puppet class
 
 ####Table of Contents
 
@@ -12,7 +12,7 @@
 
 ##Overview
 
-This module manages Veeam Backup for Linux. Veeam Backup for Linux is an agent-based solution running inside the guest OS (operating system).
+This module manages Veeam Agent for Linux. Veeam Agent for Linux is an agent-based solution running inside the guest OS (operating system).
 
 The following is currently supported:
   - Create a repository (VBR repository, local, NFS or CIFS)
@@ -21,7 +21,7 @@ The following is currently supported:
   
 ##Module description
 
-The Veeam Backup for Linux module deploys the agent on multiple nodes with the specified configuration.
+The Veeam Agent for Linux module deploys the agent on multiple nodes with the specified configuration.
 
 ##Usage
 
@@ -30,7 +30,7 @@ The Veeam Backup for Linux module deploys the agent on multiple nodes with the s
 ####Install with the default settings
 
 ```puppet
- class { 'veeam_vbl':
+ class { 'veeam_val':
    
   }
 ```
@@ -38,7 +38,7 @@ The Veeam Backup for Linux module deploys the agent on multiple nodes with the s
 ####Install with specific settings
 
 ```puppet
- class { 'veeam_vbl':
+ class { 'veeam_val':
         type            => 'volume',
         reponame        => 'backuprepo',
         repopath        => '/data/backup',
@@ -51,7 +51,7 @@ The Veeam Backup for Linux module deploys the agent on multiple nodes with the s
 
 ##Advanced features
 ```puppet
- class { 'veeam_vbl':
+ class { 'veeam_val':
         type        => File, volume or entire (DEFAULT: volume)
         reponame    => Repository name (DEFAULT: VeeamRepository)
         repopath    => Repository path (DEFAULT: /data/VeeamBackup)
@@ -84,4 +84,4 @@ Please contact Niels Engelen via [twitter](https://twitter.com/nielsengelen).
 
 ##Support
 
-Need help? Join us on the [discussion forum](https://forums.veeam.com/veeam-backup-for-linux-f41/).
+Need help? Join us on the [discussion forum](https://forums.veeam.com/veeam-agent-for-linux-f41/).

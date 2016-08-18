@@ -1,19 +1,19 @@
-# Class: veeam_vbl::service
+# Class: veeam_val::service
 #
-# Placeholder.
+# This class makes sure the service is running.
 #
 # = Author
 #
 # Niels Engelen <niels@foonet.be>
 #
-class veeam_vbl::service {
-  # Make sure the veeam_vbl service is running
-  service { $::veeam_vbl::service_name:
-    ensure     => $::veeam_vbl::service_ensure,
+class veeam_val::service {
+  # Make sure the veeam service is running
+  service { $::veeam_val::service_name:
+    ensure     => $::veeam_val::service_ensure,
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
-    subscribe  => [ Package [ $::veeam_vbl::pkg_name ] ],
-    require    => Class [ 'veeam_vbl::install' ],
+    subscribe  => [ Package [ $::veeam_val::pkg_name ] ],
+    require    => Class [ 'veeam_val::install' ],
   }
 }
