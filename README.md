@@ -123,8 +123,8 @@ Need help? Join us on the [discussion forum](https://forums.veeam.com/veeam-agen
 
 ## Todo
 
-> Add support for file level based backups.
-> Add support for SLES/SuSE.
+> - Add support for file level based backups.
+> - Add support for SLES/SuSE.
 
 ## Distributed under MIT license
 Copyright (c) 2016 VeeamHub
