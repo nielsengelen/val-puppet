@@ -6,24 +6,43 @@
 #
 class veeam_val::params {
   # Define all default parameters
-  $pkg_name       = 'veeam'
   $pkg_ensure     = 'present'
+  $pkg_name       = 'veeam'
 
   $service_cmd    = 'veeamconfig'
   $service_name   = 'veeamservice'
   $service_ensure = 'running'
 
-  $reponame       = 'VeeamRepository'
-  $repopath       = '/data/veeambackup'
+  $setup          = false
+
   $target         = 'local'
+  $reponame       = 'VeeamRepository_Puppet'
+  $repopath       = '/data/VeeamBackup_Puppet'
+
+  $cifsserver     = ''
+  $cifspath       = ''
+  $nfsserver      = ''
+  $nfspath        = ''
+  $vbrname        = ''
+  $vbrserver      = ''
+  $vbrserverport  = '10002'
+
+  $domain         = ''
+  $username       = ''
+  $password       = ''
 
   $type           = 'volume'
-  $jobname        = 'VeeamBackupJob'
+  $jobname        = 'VeeamBackupJob_Puppet'
+  $blocksize      = 4096
   $compression    = 1
-  $dedup          = true
-  $points         = 7
   $objects        = '/dev/sda'
+  $points         = 7
 
-  $prefreeze      = ''
-  $postthaw       = ''
+  $postjob        = ''
+  $prejob         = ''
+
+  $schedule       = true
+  $schedulecron   = '0 0 * * *'
+
+  $license        = ''
 }

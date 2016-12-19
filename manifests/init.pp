@@ -1,33 +1,70 @@
 # === Class veeam_val
 #
 # = Parameters
-#   pkg_ensure => ensure if it's installed or not (present or absent)
+#   pkg_ensure    => Present, latest or absent             (DEFAULT: present)
 #
-#	type	  	=> File, volume or entire 				(DEFAULT: volume)
-#   reponame  	=> Repository name						(DEFAULT: VeeamRepository)
-#	repopath  	=> Repository path						(DEFAULT: /data/VeeamBackup)
-#	target		=> Local, CIFS, NFS, vbrserver			(DEFAULT: local)
-#   jobname   	=> Job name								(DEFAULT: VeeamBackupJob)
-#	compression	=> 0 ... 4								(DEFAULT: 1)
-# 	dedup		=> true/false							(DEFAULT: true)
-#	points		=> 5									(DEFAULT: 7)
-#	objects		=> Objects to backup comma seperated	(DEFAULT: /dev/sda)
-#   prefreeze	=> Prefreeze script path				(DEFAULT: none)
-#   postthaw	=> Postthaw script path					(DEFAULT: none)
+#	target		  => Local, NFS, SMB, vbrserver            (DEFAULT: none)
+#   reponame  	  => Repository name                       (DEFAULT: none)
+#	repopath   	  => Repository path                       (DEFAULT: none)
+#
+#   setup         => Enable configuration after install    (DEFAULT: false)
+#
+#   cifsserver    => CIFS FQDN/IP                          (DEFAULT: none)
+#   cifspath      => CIFS share path                       (DEFAULT: none)
+#   nfsserver     => NFS FQDN/IP                           (DEFAULT: none)
+#   nfspath       => NFS share path                        (DEFAULT: none)
+#   vbrname       => Veeam Backup & Replication name       (DEFAULT: none)
+#   vbrserver     => Veeam Backup & Replication FQDN/IP    (DEFAULT: none)
+#   vbrserverport => Veeam Backup & Replication port       (DEFAULT: 10002)
+#
+#   domain        => Domain or hostname                    (DEFAULT: none)
+#   username      => Login for target authentication       (DEFAULT: none)
+#   password      => Password for target authentication    (DEFAULT: none)
+#
+#	type	   	  => File, volume or entire                (DEFAULT: none)
+#   jobname       => Job name                              (DEFAULT: none)
+# 	blocksize     => 256|512|1024|4096                     (DEFAULT: 4096)
+#	compression   => 0 ... 4                               (DEFAULT: 1)
+#	objects       => Objects to backup comma seperated	   (DEFAULT: none)
+#	points        => Number of restore points to keep      (DEFAULT: 7)
+#
+#   postjob  	  => Postjob script path                   (DEFAULT: none)
+#   prejob        => Prejob script path                    (DEFAULT: none)
+#
+#   schedule      => Run the job on specific schedule      (DEFAULT: false)
+#   schedulecron  => Cron format when to run the job       (DEFAULT: '0 0 * * *')
+#
+#   license       => Server or workstation                 (DEFAULT: none)
 #
 # = Examples
+# Local backup target example
 # node abc {
 #  class { 'veeam_val':
+#    setup       => true,
+#    target      => 'local'
 #  	 type        => 'volume',
-#    reponame  	=> 'Backuprepo',
-#  	 repopath  	=> '/data/backup',
-#    jobname   	=> 'My_backup_job',
-#	 compression => 1,
-# 	 dedup		=> false,
-#    points		=> 7,
-#	 objects	 	=> '/dev/sda1',
-#	 prefreeze	=> '/etc/veeam/myscript.sh',
-#	 postthaw	=> '/etc/veeam/myscriptdone.sh',
+#    reponame    => 'Backuprepo',
+#  	 repopath    => '/data/backup',
+#    jobname   	 => 'Backup_Job_To_Local',
+#	 objects     => '/dev/sda1',
+#    points		 => 14,
+#	 postjob     => '/etc/veeam/myscriptdone.sh',
+#	 prejob	     => '/etc/veeam/myscript.sh',
+#  }
+# }
+#
+# Veeam Backup & Replication repository example
+# node abc {
+#  class { 'veeam_val':
+#    setup       => true,
+#  	 type         => 'entire',
+#    vbrname      => 'VBR',
+#    vbrserver    => '10.0.0.1',
+#    vbrdomain    => 'DOMAIN',
+#    vbrlogin     => 'Veeam',
+#    vbrpassword  => 'veeamisaweomse123',
+#    reponame     => '[VBR]STORAGE',
+#    jobname   	  => 'Backup_Job_To_VBR',
 #  }
 # }
 #
@@ -43,24 +80,41 @@ class veeam_val (
   $service_name   = $::veeam_val::params::service_name,
   $service_ensure = $::veeam_val::params::service_ensure,
 
+  $setup          = $::veeam_val::params::setup,
+
+  $target         = $::veeam_val::params::target,
   $reponame       = $::veeam_val::params::reponame,
   $repopath       = $::veeam_val::params::repopath,
-  $target         = $::veeam_val::params::target,
+
+  $cifsserver     = $::veeam_val::params::cifsserver,
+  $cifspath       = $::veeam_val::params::cifspath,
+  $nfsserver      = $::veeam_val::params::nfsserver,
+  $nfspath        = $::veeam_val::params::nfspath,
+  $vbrname        = $::veeam_val::params::vbrname,
+  $vbrserver      = $::veeam_val::params::vbrserver,
+  $vbrserverport  = $::veeam_val::params::vbrserverport,
+
+  $domain         = $::veeam_val::params::domain,
+  $username       = $::veeam_val::params::username,
+  $password       = $::veeam_val::params::password,
 
   $type           = $::veeam_val::params::type,
   $jobname        = $::veeam_val::params::jobname,
   $compression    = $::veeam_val::params::compression,
-  $dedup          = $::veeam_val::params::dedup,
+  $blocksize      = $::veeam_val::params::blocksize,
   $points         = $::veeam_val::params::points,
   $objects        = $::veeam_val::params::objects,
-) inherits veeam_val::params {
-  # Includes
-  include veeam_val::install
-  include veeam_val::config
-  include veeam_val::service
 
-  Class[ 'veeam_val::params' ] ->
-  Class[ 'veeam_val::install' ] ->
-  Class[ 'veeam_val::service' ] ->
-  Class[ 'veeam_val::config' ]
+  $postjob        = $::veeam_val::params::postjob,
+  $prejob         = $::veeam_val::params::prejob,
+
+  $schedule       = $::veeam_val::params::schedule,
+  $schedulecron   = $::veeam_val::params::schedulecron,
+
+  $license        = $::veeam_val::params::license,
+) inherits veeam_val::params {
+  class{ 'veeam_val::install': } ->
+  class{ 'veeam_val::config': } ->
+  class{ 'veeam_val::service': } ->
+  Class['veeam_val']
 }

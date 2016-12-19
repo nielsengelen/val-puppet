@@ -13,7 +13,7 @@ class veeam_val::service {
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
-    subscribe  => [ Package [ $::veeam_val::pkg_name ] ],
-    require    => Class [ 'veeam_val::install' ],
+    subscribe  => Package[$::veeam_val::pkg_name],
+    require    => Package[$::veeam_val::pkg_name],
   }
 }
