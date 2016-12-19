@@ -23,7 +23,7 @@ The following is currently supported:
 
 > **Note:**
 
-> - This is an example class  and can be modified as you want. Please test it in a development environment before running directly in production.
+> This is an example class  and can be modified as you want. Please test it in a development environment before running directly in production.
   
 ##Module description
 
