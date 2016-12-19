@@ -1,5 +1,5 @@
-Veeam Agent for Linux puppet class
-----------------------------------
+Veeam Agent for Linux puppet module
+-----------------------------------
 
 ##Table of Contents
 
@@ -23,7 +23,7 @@ The following is currently supported:
 
 > **Note:**
 
-> This is an example class  and can be modified as you want. Please test it in a development environment before running directly in production.
+> This is an example module and can be modified as you want. Please test it in a development environment before running directly in production.
   
 ##Module description
 
@@ -36,7 +36,7 @@ For usage on Yum based distro's [yumrepo](https://docs.puppet.com/puppet/latest/
 
 ##Usage
 
-When the license is being handled by Veeam Backup & Replication no additional license configuration is needed. If the license is however managed per device place your license file in the files folder under the module or disable license management via the class.
+When the license is being handled by Veeam Backup & Replication no additional license configuration is needed. If the license is however managed per device place your license file in the files folder under the module or disable license management via the module.
 
 ###Install with the default settings
 
