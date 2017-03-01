@@ -50,7 +50,7 @@ class veeam_val::install {
       }
 
       yumrepo { 'epel':
-        mirrorlist     => "https://mirrors.fedoraproject.org/metalink?repo=epel-${::osversion}&arch=${::architecture}",
+        mirrorlist     => "https://mirrors.fedoraproject.org/metalink?repo=epel-${osversion}&arch=${::architecture}",
         descr          => 'Extra Packages for Enterprise Linux',
         enabled        => 1,
         gpgcheck       => 0,
@@ -67,7 +67,7 @@ class veeam_val::install {
 
       yumrepo { 'veeam':
         descr    => 'Veeam Backup for GNU/Linux - $basearch',
-        baseurl  => "http://repository.veeam.com/backup/linux/agent/rpm/${pkg_os_suffix}/${::osversion}/${::architecture}",
+        baseurl  => "http://repository.veeam.com/backup/linux/agent/rpm/${pkg_os_suffix}/${osversion}/${::architecture}",
         enabled  => 1,
         gpgcheck => 1,
         gpgcakey => 'file:///etc/pki/rpm-gpg/VeeamSoftwareRepo',
