@@ -1,6 +1,7 @@
 # === Class veeam_val
 #
 # = Parameters
+#   epel_manage   => Add epel repo (true,false)            (DEFAULT: true)
 #   pkg_ensure    => Present, latest or absent             (DEFAULT: present)
 #
 #	target		  => Local, NFS, SMB, vbrserver            (DEFAULT: none)
@@ -73,6 +74,8 @@
 # Niels Engelen (niels@foonet.be)
 #
 class veeam_val (
+  $epel_manage    = $::veeam_val::params::epel_manage,
+
   $pkg_ensure     = $::veeam_val::params::pkg_ensure,
   $pkg_name       = $::veeam_val::params::pkg_name,
 

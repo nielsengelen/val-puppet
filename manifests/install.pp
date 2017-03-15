@@ -8,6 +8,7 @@
 #
 class veeam_val::install {
   # Get all packages installed properly
+  $epel_manage = $::veeam_val::epel_manage
   $pkg_name   = $veeam_val::pkg_name
   $pkg_ensure = $veeam_val::pkg_ensure
 
@@ -49,15 +50,17 @@ class veeam_val::install {
         mode   => '0755',
       }
 
-      yumrepo { 'epel':
-        mirrorlist     => "https://mirrors.fedoraproject.org/metalink?repo=epel-${osversion}&arch=${::architecture}",
-        descr          => 'Extra Packages for Enterprise Linux',
-        enabled        => 1,
-        gpgcheck       => 0,
-        failovermethod => 'priority',
+      if ( $epel_manage ) {
+          yumrepo { 'epel':
+              mirrorlist     => "https://mirrors.fedoraproject.org/metalink?repo=epel-${osversion}&arch=${::architecture}",
+              descr          => 'Extra Packages for Enterprise Linux',
+              enabled        => 1,
+              gpgcheck       => 0,
+              failovermethod => 'priority',
+          }
       }
 
-      file { '/etc/pki/rpm-gpg/VeeamSoftwareRepo':
+      file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-VeeamSoftwareRepo':
         ensure => present,
         owner  => 'root',
         group  => 'root',
@@ -65,12 +68,20 @@ class veeam_val::install {
         source => 'puppet:///modules/veeam_val/RPM-GPG-KEY-VeeamSoftwareRepo',
       } ->
 
+      file { '/etc/pki/rpm-gpg/VeeamSoftwareRepo':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/veeam_val/VeeamSoftwareRepo',
+      } ->
+
       yumrepo { 'veeam':
         descr    => 'Veeam Backup for GNU/Linux - $basearch',
         baseurl  => "http://repository.veeam.com/backup/linux/agent/rpm/${pkg_os_suffix}/${osversion}/${::architecture}",
         enabled  => 1,
         gpgcheck => 1,
-        gpgcakey => 'file:///etc/pki/rpm-gpg/VeeamSoftwareRepo',
+        #gpgcakey => 'file:///etc/pki/rpm-gpg/VeeamSoftwareRepo',
         gpgkey   => 'http://repository.veeam.com/keys/RPM-GPG-KEY-VeeamSoftwareRepo http://repository.veeam.com/keys/VeeamSoftwareRepo',
         before   => Package[$pkg_name],
       }

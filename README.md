@@ -69,8 +69,9 @@ More examples are provided in the [examples](https://github.com/nielsengelen/val
 ###Advanced features
 ```puppet
  class { 'veeam_val':
-        setup         => true of false (required for advanced setup)
-        
+        setup         => true or false (required for advanced setup)
+
+        epel_manage   => Add epel repository true or false (DEFAULT: true)
         target        => Local, CIFS, NFS, vbrserver (DEFAULT: local)
         reponame      => Repository name (DEFAULT: VeeamRepository)
         repopath      => Repository path (DEFAULT: /data/VeeamBackup)
@@ -81,12 +82,12 @@ More examples are provided in the [examples](https://github.com/nielsengelen/val
         nfspath       => NFS share path (DEFAULT: none)
         vbrname       => Veeam Backup & Replication name (DEFAULT: none)
         vbrserver     => Veeam Backup & Replication FQDN/IP (DEFAULT: none)
-        vbrserverport => Veeam Backup & Replication port (DEFAULT: 10002)       
+        vbrserverport => Veeam Backup & Replication port (DEFAULT: 10002)
 
         domain        => Domain or hostname (DEFAULT: none)
         username      => Login for target authentication (DEFAULT: none)
         password      => Password for target authentication (DEFAULT: none)
-        
+
         type          => Entire or volume (DEFAULT: volume)
         jobname       => Job name (DEFAULT: VeeamBackupJob)
         blocksize     => 256|512|1024|4096 (DEFAULT: 4096)
