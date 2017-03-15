@@ -81,7 +81,6 @@ class veeam_val::install {
         baseurl  => "http://repository.veeam.com/backup/linux/agent/rpm/${pkg_os_suffix}/${osversion}/${::architecture}",
         enabled  => 1,
         gpgcheck => 1,
-        #gpgcakey => 'file:///etc/pki/rpm-gpg/VeeamSoftwareRepo',
         gpgkey   => 'http://repository.veeam.com/keys/RPM-GPG-KEY-VeeamSoftwareRepo http://repository.veeam.com/keys/VeeamSoftwareRepo',
         before   => Package[$pkg_name],
       }
