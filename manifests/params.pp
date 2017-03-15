@@ -6,6 +6,7 @@
 #
 class veeam_val::params {
   # Define all default parameters
+  $epel_manage    = true
   $pkg_ensure     = 'present'
   $pkg_name       = 'veeam'
 

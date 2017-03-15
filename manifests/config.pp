@@ -9,6 +9,8 @@ class veeam_val::config (
   $service_name    = $::veeam_val::service_name,
   $service_ensure  = $::veeam_val::service_ensure,
 
+  $epel_manage     = $::veeam_val::epel_manage,
+
   $pkg_ensure      = $::veeam_val::pkg_ensure,
   $pkg_name        = $::veeam_val::pkg_name,
 
@@ -157,7 +159,7 @@ class veeam_val::config (
         group   => 'root',
         mode    => '0644',
         require => [Package[$pkg_name],Exec['create_job']],
-        content => "# Created by Puppet.\n${schedulecron} root ${service_cmd} job start --name '${jobname}' --retriable --highpriority";
+        content => "# Created by Puppet.\n${schedulecron} root ${service_cmd} job start --name '${jobname}' --retriable --highpriority\n";
       }
     }
   }
