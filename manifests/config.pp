@@ -37,6 +37,10 @@ class veeam_val::config (
   $blocksize       = $::veeam_val::blocksize,
   $compression     = $::veeam_val::compression,
   $objects         = $::veeam_val::objects,
+  $includedirs     = $::veeam_val::includedirs,
+  $excludedirs     = $::veeam_val::excludedirs,
+  $includemasks    = $::veeam_val::includemasks,
+  $excludemasks    = $::veeam_val::excludemasks,
   $points          = $::veeam_val::points,
 
   $postjob         = $::veeam_val::postjob,
@@ -135,16 +139,23 @@ class veeam_val::config (
       }
 
       # Create the backup job with the correct settings
-      if ($type != 'entire') {
+      if ($type == 'entire') {
         exec { 'create_job':
-          command => "${service_cmd} job create --name '${jobname}' --repoName '${reponame}' --postjob '${postjob}' --prejob '${prejob}' --compressionLevel ${compression} --maxPoints ${points} --objects '${objects}'",
+          command => "${service_cmd} job create --name '${jobname}' --repoName '${reponame}' --postjob '${postjob}' --prejob '${prejob}' --compressionLevel ${compression} --maxPoints ${points} --backupAllSystem'",
+          unless  => "${service_cmd} job list | /bin/grep -c ${jobname}",
+          require => Exec['create_repository'],
+        }
+      }
+      elsif ($type == 'file') {
+        exec { 'create_job':
+          command => "${service_cmd} job create fileLevel --name '${jobname}' --repoName '${reponame}' --postjob '${postjob}' --prejob '${prejob}' --compressionLevel ${compression} --maxPoints ${points} --includeDirs '${includedirs}' --excludeDirs '${excludedirs}' --includeMasks \"${includeMasks}\" --excludeMasks \"${excludeMasks}\"",
           unless  => "${service_cmd} job list | /bin/grep -c ${jobname}",
           require => Exec['create_repository'],
         }
       }
       else {
         exec { 'create_job':
-          command => "${service_cmd} job create --name '${jobname}' --repoName '${reponame}' --postjob '${postjob}' --prejob '${prejob}' --compressionLevel ${compression} --maxPoints ${points} --backupAllSystem'",
+          command => "${service_cmd} job create --name '${jobname}' --repoName '${reponame}' --postjob '${postjob}' --prejob '${prejob}' --compressionLevel ${compression} --maxPoints ${points} --objects '${objects}'",
           unless  => "${service_cmd} job list | /bin/grep -c ${jobname}",
           require => Exec['create_repository'],
         }
