@@ -18,10 +18,10 @@ class veeam_val::install {
         $pkg_os_suffix = 'fc'
 
         case $::operatingsystemrelease {
-          /23./: {
+          /^23\./: {
             $osversion = 23
           }
-          /24./: {
+          /^24\./: {
             $osversion = 24
           }
           default: {
@@ -32,10 +32,10 @@ class veeam_val::install {
         $pkg_os_suffix = 'el'
 
         case $::operatingsystemrelease {
-          /6./: {
+          /^6\./: {
             $osversion = 6
           }
-          /7./: {
+          /^7\./: {
             $osversion = 7
           }
           default: {
